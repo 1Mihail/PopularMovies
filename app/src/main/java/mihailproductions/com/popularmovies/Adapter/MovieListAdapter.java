@@ -63,6 +63,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     }
 
     private void onItemClick(View view, int position) {
-        Log.i("TAG", "You clicked " + mMovies.get(position).getTitle() + ", which is at cell position " + position);
+        Log.i("TAG", "You clicked " + mMovies.get(position).getId() + ", which is at cell position " + position);
     }
 }

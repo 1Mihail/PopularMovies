@@ -13,5 +13,6 @@ public interface ApiInterface {
     @GET(POPULAR_REQUEST + API_KEY)
     Call<MovieResponse> getPopularMovies();
 
-
+    @GET(TOP_RATED_REQUEST + API_KEY)
+    Call<MovieResponse> getTopRatedMovies();
 }
