@@ -1,8 +1,8 @@
 package mihailproductions.com.popularmovies.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mihailproductions.com.popularmovies.Model.Movie;
+import mihailproductions.com.popularmovies.MovieActivity;
 import mihailproductions.com.popularmovies.R;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
@@ -63,6 +64,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     }
 
     private void onItemClick(View view, int position) {
-        Log.i("TAG", "You clicked " + mMovies.get(position).getId() + ", which is at cell position " + position);
+        Intent i = new Intent(view.getContext(), MovieActivity.class);
+        i.putExtra("movieid",mMovies.get(position).getId());
+        view.getContext().startActivity(i);
     }
 }

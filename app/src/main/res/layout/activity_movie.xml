@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="mihailproductions.com.popularmovies.MovieActivity">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/movie_poster"
+        tools:src="@drawable/ic_launcher_background"
+        style="@style/poster_style"/>
+    <TextView
+        android:id="@+id/movie_title"
+        tools:text="Title"
+        style="@style/title_style" />
+    <TextView
+        android:id="@+id/movie_rating"
+        tools:text="4"
+        style="@style/rating_style"/>
+    <TextView
+        android:id="@+id/movie_release"
+        tools:text="11-02-1996"
+        style="@style/release_style"/>
+</RelativeLayout>
+    <TextView
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis feugiat ipsum, in ultricies elit. Duis sodales mi mi, nec aliquet augue dictum ac. Morbi mauris purus, semper eget rutrum non, viverra sit amet elit. Quisque non sagittis arcu, ut dapibus nulla. Suspendisse vestibulum magna aliquam eros condimentum maximus. Sed congue, ex sed finibus accumsan, nunc justo interdum purus, et dapibus mi arcu id libero. Suspendisse lorem orci, efficitur vitae euismod id, convallis id libero. Nullam dictum convallis velit non placerat. "
+        android:id="@+id/movie_overview"
+        style="@style/overview_style" />
+</LinearLayout>

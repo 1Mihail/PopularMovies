@@ -13,4 +13,45 @@
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">fitXY</item>
     </style>
+    <style name="poster_style">
+        <item name="android:layout_width">@dimen/poster_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/margin</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+    <style name="title_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/title_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_toRightOf">@id/movie_poster</item>
+        <item name="android:layout_marginTop">@dimen/margin</item>
+        <item name="android:layout_marginRight">@dimen/margin</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="rating_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin</item>
+        <item name="android:layout_marginRight">@dimen/margin</item>
+        <item name="android:layout_toRightOf">@id/movie_poster</item>
+        <item name="android:layout_below">@id/movie_title</item>
+        <item name="android:drawableLeft">@drawable/ic_rating</item>
+        <item name="android:drawablePadding">@dimen/padding</item>
+    </style>
+    <style name="release_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin</item>
+        <item name="android:layout_marginRight">@dimen/margin</item>
+        <item name="android:layout_toRightOf">@id/movie_poster</item>
+        <item name="android:layout_below">@id/movie_rating</item>
+        <item name="android:drawableLeft">@drawable/ic_release</item>
+        <item name="android:drawablePadding">@dimen/padding</item>
+    </style>
+    <style name="overview_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/margin</item>
+    </style>
 </resources>
