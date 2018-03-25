@@ -8,10 +8,10 @@ cd PopularMovies
 touch gradle.properties
 notepad gradle.properties
 ```
-Add the following lines and replace # with your api key.
+Add the following lines and replace $ with your api key.
 ```
 # Themoviedb Secret Key
-API_KEY="#"
+API_KEY="$"
 ```
 If you don't have one, you can generate it [here](https://www.themoviedb.org/settings/api).
 
