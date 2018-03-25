@@ -10,15 +10,19 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mihailproductions.com.popularmovies.Model.Movie;
 import mihailproductions.com.popularmovies.R;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
-    private String[] mMovies = new String[0];
+    private List<Movie> mMovies = new ArrayList<>();
     private LayoutInflater mInflater;
 
-    public MovieListAdapter(Context context, String[] data) {
+    public MovieListAdapter(Context context, ArrayList<Movie> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mMovies = data;
     }
@@ -31,8 +35,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public void onBindViewHolder(MovieListAdapter.ViewHolder holder, int position) {
+        final String POSTER_BASE_URL="https://image.tmdb.org/t/p/w185//";
         Picasso.with(holder.moviePoster.getContext())
-                .load(mMovies[position])
+                .load(POSTER_BASE_URL + mMovies.get(position).getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .error(android.R.drawable.ic_delete)
                 .into(holder.moviePoster);
@@ -40,7 +45,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public int getItemCount() {
-        return mMovies.length;
+        return mMovies.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -58,6 +63,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     }
 
     private void onItemClick(View view, int position) {
-        Log.i("TAG", "You clicked " + mMovies[position] + ", which is at cell position " + position);
+        Log.i("TAG", "You clicked " + mMovies.get(position).getTitle() + ", which is at cell position " + position);
     }
 }

@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        String[] data = {"https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "https://image.tmdb.org/t/p/w185//d3qcpfNwbAMCNqWDHzPQsUYiUgS.jpg", "https://image.tmdb.org/t/p/w185//4PiiNGXj1KENTmCBHeN6Mskj2Fq.jpg"};
-
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         ApiInterface api = Client.getClient().create(ApiInterface.class);
 
         Call<MovieResponse> callPopularMovies = api.getPopularMovies();
@@ -34,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         callPopularMovies.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                    Log.v("*************",response.body().getResults().size()+"");
+                adapter = new MovieListAdapter(MainActivity.this, response.body().getResults());
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -42,9 +42,5 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        adapter = new MovieListAdapter(this, data);
-        recyclerView.setAdapter(adapter);
     }
 }

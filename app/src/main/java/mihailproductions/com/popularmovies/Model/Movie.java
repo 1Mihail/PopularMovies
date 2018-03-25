@@ -3,6 +3,7 @@ package mihailproductions.com.popularmovies.Model;
 import com.google.gson.annotations.SerializedName;
 
 public class Movie {
+    private int id;
     private String title;
     @SerializedName("release_date")
     private String releaseDate;
@@ -19,6 +20,8 @@ public class Movie {
         this.voteAverage = voteAverage;
         this.plotSynopsis = plotSynopsis;
     }
+
+    public int getId(){return  id;}
 
     public String getTitle() {
         return title;
