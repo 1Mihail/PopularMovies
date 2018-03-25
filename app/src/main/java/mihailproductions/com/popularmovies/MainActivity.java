@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,42 +20,46 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private MovieListAdapter adapter;
-    private ApiInterface api;
-    @BindView(R.id.movie_list) RecyclerView recyclerView;
+    @BindView(R.id.movie_list)
+    RecyclerView mMovieListRV;
+    private MovieListAdapter mAdapter;
+    private ApiInterface mApi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        api = Client.getClient().create(ApiInterface.class);
-        showMovies(api.getPopularMovies());
+        mMovieListRV.setLayoutManager(new GridLayoutManager(this, 3));
+        mApi = Client.getClient().create(ApiInterface.class);
+        showMovies(mApi.getPopularMovies());
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.corner_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         changeActionBarTitle(item.getItemId());
         switch (item.getItemId()) {
             case R.id.top_rated:
-                showMovies(api.getTopRatedMovies());
+                showMovies(mApi.getTopRatedMovies());
                 return true;
             case R.id.popular:
-                showMovies(api.getPopularMovies());
+                showMovies(mApi.getPopularMovies());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void changeActionBarTitle(int option){
-        if(getSupportActionBar()!=null){
-            switch (option){
+    private void changeActionBarTitle(int option) {
+        if (getSupportActionBar() != null) {
+            switch (option) {
                 case R.id.top_rated:
                     getSupportActionBar().setTitle(R.string.top_rated_movies);
                     break;
@@ -67,12 +70,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showMovies(Call<MovieResponse> call){
+    private void showMovies(Call<MovieResponse> call) {
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                adapter = new MovieListAdapter(MainActivity.this, response.body().getResults());
-                recyclerView.setAdapter(adapter);
+                mAdapter = new MovieListAdapter(MainActivity.this, response.body().getResults());
+                mMovieListRV.setAdapter(mAdapter);
             }
 
             @Override

@@ -13,6 +13,7 @@ public class Movie {
     private double voteAverage;
     @SerializedName("overview")
     private String plotSynopsis;
+
     public Movie(String title, String releaseDate, String posterPath, double voteAverage, String plotSynopsis) {
         this.title = title;
         this.releaseDate = releaseDate;
@@ -21,7 +22,9 @@ public class Movie {
         this.plotSynopsis = plotSynopsis;
     }
 
-    public int getId(){return  id;}
+    public int getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;

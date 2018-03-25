@@ -36,7 +36,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public void onBindViewHolder(MovieListAdapter.ViewHolder holder, int position) {
-        final String POSTER_BASE_URL="https://image.tmdb.org/t/p/w185//";
+        final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185//";
         Picasso.with(holder.moviePoster.getContext())
                 .load(POSTER_BASE_URL + mMovies.get(position).getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_gallery)
@@ -49,23 +49,25 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         return mMovies.size();
     }
 
+    private void onItemClick(View view, int position) {
+        Intent i = new Intent(view.getContext(), MovieActivity.class);
+        i.putExtra("movieid", mMovies.get(position).getId());
+        view.getContext().startActivity(i);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.movie_list_poster) ImageView moviePoster;
+        @BindView(R.id.movie_list_poster)
+        ImageView moviePoster;
 
         ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
             onItemClick(view, getAdapterPosition());
         }
-    }
-
-    private void onItemClick(View view, int position) {
-        Intent i = new Intent(view.getContext(), MovieActivity.class);
-        i.putExtra("movieid",mMovies.get(position).getId());
-        view.getContext().startActivity(i);
     }
 }

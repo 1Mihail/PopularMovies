@@ -29,17 +29,18 @@ public class MovieActivity extends AppCompatActivity {
     @BindView(R.id.movie_overview)
     TextView mMovieOverview;
     private ApiInterface mApi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         ButterKnife.bind(this);
-        int currentMovieId = getIntent().getIntExtra("movieid",0);
+        int currentMovieId = getIntent().getIntExtra("movieid", 0);
         mApi = Client.getClient().create(ApiInterface.class);
         showMovieDetails(mApi.getMovieDetails(currentMovieId));
     }
 
-    private void showMovieDetails(Call<Movie> call){
+    private void showMovieDetails(Call<Movie> call) {
         call.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
@@ -53,8 +54,8 @@ public class MovieActivity extends AppCompatActivity {
         });
     }
 
-    void populateMovieActivity(Movie movie){
-        final String POSTER_BASE_URL="https://image.tmdb.org/t/p/w185//";
+    void populateMovieActivity(Movie movie) {
+        final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185//";
         Picasso.with(this)
                 .load(POSTER_BASE_URL + movie.getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_gallery)
