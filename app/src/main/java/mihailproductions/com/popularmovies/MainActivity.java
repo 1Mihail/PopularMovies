@@ -1,12 +1,13 @@
 package mihailproductions.com.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.persistence.room.Room;
-import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,7 +25,6 @@ import mihailproductions.com.popularmovies.Database.MovieDB;
 import mihailproductions.com.popularmovies.Model.LocalDB.MovieEntity;
 import mihailproductions.com.popularmovies.Model.Movie;
 import mihailproductions.com.popularmovies.Model.MovieResponse;
-import mihailproductions.com.popularmovies.Repository.MovieDAO;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         movieDatabase = Room.databaseBuilder(getApplicationContext(),
                 MovieDB.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
                 .build();
         showMovies(mApi.getPopularMovies());
     }
@@ -71,24 +70,25 @@ public class MainActivity extends AppCompatActivity {
                 showMovies(mApi.getPopularMovies());
                 return true;
             case R.id.favorites:
-                Toast.makeText(this, "TODO: Populate favorites from db", Toast.LENGTH_SHORT).show();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        List<MovieEntity> moviesList = movieDatabase.daoAccess().fetchFavorites();
-                        ArrayList<Movie> newList = new ArrayList<>();
-                        for(MovieEntity movie : moviesList){
-                            newList.add(new Movie(movie.getId(),movie.getTitle(),movie.getPosterPath()));
-                        }
-                        mAdapter = new MovieListAdapter(MainActivity.this, newList);
-                        mMovieListRV.setAdapter(mAdapter);
-                    }
-                });
-
+                showFavorites();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    private void showFavorites(){
+        LiveData<List<MovieEntity>>  moviesList = movieDatabase.daoAccess().fetchFavorites();
+        moviesList.observe(this, new Observer<List<MovieEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieEntity> moviesList) {
+                ArrayList<Movie> newList = new ArrayList<>();
+                for(MovieEntity movie : moviesList){
+                    newList.add(new Movie(movie.getId(),movie.getTitle(),movie.getPosterPath()));
+                }
+                mAdapter = new MovieListAdapter(MainActivity.this, newList);
+                mMovieListRV.setAdapter(mAdapter);
+            }
+        });
     }
 
     private void changeActionBarTitle(int option) {

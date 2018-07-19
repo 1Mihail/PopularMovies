@@ -1,15 +1,17 @@
 package mihailproductions.com.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.persistence.room.Room;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,7 +66,6 @@ public class MovieActivity extends AppCompatActivity {
         movieDatabase = Room.databaseBuilder(getApplicationContext(),
                 MovieDB.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
                 .build();
         mCurrentMovieId = getIntent().getIntExtra("movieid", 0);
         mApi = Client.getClient().create(ApiInterface.class);
@@ -78,20 +79,31 @@ public class MovieActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        MovieEntity favoriteMovie = movieDatabase.daoAccess().fetchOneMoviesbyMovieId(mCurrentMovieId);
+                        MovieEntity favoriteMovie = movieDatabase.daoAccess().fetchMovieById(mCurrentMovieId);
                         if(movie!=null && favoriteMovie==null){
-                            MovieEntity movieEntity = new MovieEntity(movie.getId() ,movie.getTitle(),movie.getPosterPath());
-                            movieDatabase.daoAccess().insertOnlySingleMovie(movieEntity);
-                        }else{
-                            if(favoriteMovie != null){
+                            movieDatabase.daoAccess().insertOnlySingleMovie(new MovieEntity(movie.getId() ,movie.getTitle(),movie.getPosterPath()));
+                        }else if(favoriteMovie != null){
                                 movieDatabase.daoAccess().deleteMovie(favoriteMovie);
                             }
-                        }
-                        adjustFavoriteButtonColor();
                     }
                 }) .start();
             }
         });
+    }
+
+    void adjustFavoriteButtonColor(){
+        final LiveData<MovieEntity> favoriteMovie = movieDatabase.daoAccess().fetchMovieByIdLive(mCurrentMovieId);
+        favoriteMovie.observe(this, new Observer<MovieEntity>() {
+            @Override
+            public void onChanged(@Nullable MovieEntity favoriteMovie) {
+                if(favoriteMovie!=null){
+                    mFavorites.setColorFilter(getResources().getColor(R.color.colorFavorite));
+                }else{
+                    mFavorites.setColorFilter(getResources().getColor(R.color.colorPrimaryDark));
+                }
+            }
+        });
+
     }
 
     void initiateTrailers(){
@@ -128,15 +140,6 @@ public class MovieActivity extends AppCompatActivity {
             context.startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {
             context.startActivity(webIntent);
-        }
-    }
-
-    void adjustFavoriteButtonColor(){
-        MovieEntity favoriteMovie = movieDatabase.daoAccess().fetchOneMoviesbyMovieId(mCurrentMovieId);
-        if(favoriteMovie!=null){
-            mFavorites.setColorFilter(getResources().getColor(R.color.colorFavorite));
-        }else{
-            mFavorites.setColorFilter(getResources().getColor(R.color.colorPrimaryDark));
         }
     }
 

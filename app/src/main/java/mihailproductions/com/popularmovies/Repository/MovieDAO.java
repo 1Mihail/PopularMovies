@@ -1,5 +1,6 @@
 package mihailproductions.com.popularmovies.Repository;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -14,11 +15,11 @@ public interface MovieDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertOnlySingleMovie (MovieEntity movie);
     @Query("SELECT * FROM MovieEntity WHERE id = :id")
-    MovieEntity fetchOneMoviesbyMovieId (int id);
+    LiveData<MovieEntity> fetchMovieByIdLive(int id);
+    @Query("SELECT * FROM MovieEntity WHERE id = :id")
+    MovieEntity fetchMovieById (int id);
     @Query ("SELECT * FROM MovieEntity")
-    List<MovieEntity> fetchFavorites ();
+    LiveData<List<MovieEntity>> fetchFavorites ();
     @Delete
     void deleteMovie (MovieEntity Movie);
-    @Query("DELETE FROM MovieEntity")
-    void nukeTable();
 }
