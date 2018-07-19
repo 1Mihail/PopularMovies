@@ -55,7 +55,7 @@ public class MovieActivity extends AppCompatActivity {
     private Movie movie;
     private int mCurrentMovieId;
 
-    private static final String DATABASE_NAME = "movies_db";
+    public static final String KEY_MOVIE_ID = "movieid";
     private MovieDB movieDatabase;
 
     @Override
@@ -63,11 +63,9 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         ButterKnife.bind(this);
-        movieDatabase = Room.databaseBuilder(getApplicationContext(),
-                MovieDB.class, DATABASE_NAME)
-                .fallbackToDestructiveMigration()
-                .build();
-        mCurrentMovieId = getIntent().getIntExtra("movieid", 0);
+
+        movieDatabase = MovieDB.getInstance(this);
+        mCurrentMovieId = getIntent().getIntExtra(KEY_MOVIE_ID, 0);
         mApi = Client.getClient().create(ApiInterface.class);
         showMovieDetails(mApi.getMovieDetails(mCurrentMovieId));
 

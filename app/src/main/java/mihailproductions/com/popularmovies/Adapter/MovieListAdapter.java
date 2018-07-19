@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mihailproductions.com.popularmovies.MainActivity;
 import mihailproductions.com.popularmovies.Model.Movie;
 import mihailproductions.com.popularmovies.MovieActivity;
 import mihailproductions.com.popularmovies.R;
@@ -51,7 +52,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     private void onItemClick(View view, int position) {
         Intent i = new Intent(view.getContext(), MovieActivity.class);
-        i.putExtra("movieid", mMovies.get(position).getId());
+        i.putExtra(MovieActivity.KEY_MOVIE_ID, mMovies.get(position).getId());
         view.getContext().startActivity(i);
     }
 

@@ -2,7 +2,10 @@ package mihailproductions.com.popularmovies;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import mihailproductions.com.popularmovies.Database.MovieDB;
 import mihailproductions.com.popularmovies.Model.LocalDB.MovieEntity;
 import mihailproductions.com.popularmovies.Model.Movie;
 import mihailproductions.com.popularmovies.Model.MovieResponse;
+import mihailproductions.com.popularmovies.Model.ViewModel.FavoriteListViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mMovieListRV;
     private MovieListAdapter mAdapter;
     private ApiInterface mApi;
-
-    private static final String DATABASE_NAME = "movies_db";
-    private MovieDB movieDatabase;
+    private MovieDB mMovieDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mMovieListRV.setLayoutManager(new GridLayoutManager(this, 3));
         mApi = Client.getClient().create(ApiInterface.class);
-        movieDatabase = Room.databaseBuilder(getApplicationContext(),
-                MovieDB.class, DATABASE_NAME)
-                .fallbackToDestructiveMigration()
-                .build();
+        mMovieDatabase = MovieDB.getInstance(this);
         showMovies(mApi.getPopularMovies());
     }
 
@@ -77,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void showFavorites(){
-        LiveData<List<MovieEntity>>  moviesList = movieDatabase.daoAccess().fetchFavorites();
-        moviesList.observe(this, new Observer<List<MovieEntity>>() {
+        FavoriteListViewModel viewModel = ViewModelProviders.of(this).get(FavoriteListViewModel.class);
+        viewModel.getFavoriteList().observe(this, new Observer<List<MovieEntity>>() {
             @Override
             public void onChanged(@Nullable List<MovieEntity> moviesList) {
                 ArrayList<Movie> newList = new ArrayList<>();
