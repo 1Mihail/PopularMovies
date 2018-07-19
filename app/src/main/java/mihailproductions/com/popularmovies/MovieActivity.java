@@ -2,7 +2,6 @@ package mihailproductions.com.popularmovies;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.persistence.room.Room;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,12 +50,15 @@ public class MovieActivity extends AppCompatActivity {
     RecyclerView mReviewsRV;
     @BindView(R.id.no_reviews)
     TextView noReviews;
+    @BindView(R.id.svContainer)
+    ScrollView mSvContainer;
     private ReviewListAdapter mAdapter;
     private ApiInterface mApi;
     private Movie movie;
     private int mCurrentMovieId;
 
     public static final String KEY_MOVIE_ID = "movieid";
+    private final String SCROLL_VIEW_POSITION = "scroll_view_position";
     private MovieDB movieDatabase;
 
     @Override
@@ -181,5 +184,18 @@ public class MovieActivity extends AppCompatActivity {
         mMovieOverview.setText(movie.getPlotSynopsis());
         initiateTrailers();
         initiateReviews();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        //TODO: Finish
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        //TODO: Finish
     }
 }
