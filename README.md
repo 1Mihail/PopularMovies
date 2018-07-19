@@ -20,6 +20,8 @@ If you don't have one, you can generate it [here](https://www.themoviedb.org/set
 * Butterknife
 * Retrofit
 * Okhttp3 - Logging interceptor
+* Room
+* LiveData
 
 ## Screenshots
 ![MainActivity](https://raw.githubusercontent.com/1Mihail/PopularMovies/master/Screenshots/Screenshot1.jpg)
