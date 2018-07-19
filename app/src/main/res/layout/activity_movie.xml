@@ -5,7 +5,7 @@
 <LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context="mihailproductions.com.popularmovies.MovieActivity">
 <RelativeLayout
@@ -19,6 +19,13 @@
         android:id="@+id/movie_title"
         tools:text="Title"
         style="@style/title_style" />
+    <ImageView
+        android:id="@+id/favorites"
+        android:src="@drawable/ic_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/movie_poster"
+        android:layout_marginTop="@dimen/margin"/>
     <TextView
         android:id="@+id/movie_rating"
         tools:text="4"

@@ -22,6 +22,12 @@ public class Movie {
         this.plotSynopsis = plotSynopsis;
     }
 
+    public Movie(int id, String title, String posterPath) {
+        this.id = id;
+        this.title = title;
+        this.posterPath = posterPath;
+    }
+
     public int getId() {
         return id;
     }

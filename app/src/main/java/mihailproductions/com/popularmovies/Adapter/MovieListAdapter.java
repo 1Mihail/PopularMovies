@@ -20,7 +20,7 @@ import mihailproductions.com.popularmovies.MovieActivity;
 import mihailproductions.com.popularmovies.R;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
-    private List<Movie> mMovies = new ArrayList<>();
+    private List<Movie> mMovies;
     private LayoutInflater mInflater;
 
     public MovieListAdapter(Context context, ArrayList<Movie> data) {
