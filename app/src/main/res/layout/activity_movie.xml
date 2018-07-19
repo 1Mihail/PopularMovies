@@ -1,45 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context="mihailproductions.com.popularmovies.MovieActivity"
-    android:id="@+id/ll_container">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:id="@+id/movie_poster"
-        tools:src="@drawable/ic_launcher_background"
-        style="@style/poster_style"/>
-    <TextView
-        android:id="@+id/movie_title"
-        tools:text="Title"
-        style="@style/title_style" />
-    <ImageView
-        android:id="@+id/favorites"
-        android:src="@drawable/ic_favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/movie_poster"
-        android:layout_marginTop="@dimen/margin"/>
-    <TextView
-        android:id="@+id/movie_rating"
-        tools:text="4"
-        style="@style/rating_style"/>
-    <TextView
-        android:id="@+id/movie_release"
-        tools:text="11-02-1996"
-        style="@style/release_style"/>
-</RelativeLayout>
-    <TextView
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis feugiat ipsum, in ultricies elit. Duis sodales mi mi, nec aliquet augue dictum ac. Morbi mauris purus, semper eget rutrum non, viverra sit amet elit. Quisque non sagittis arcu, ut dapibus nulla. Suspendisse vestibulum magna aliquam eros condimentum maximus. Sed congue, ex sed finibus accumsan, nunc justo interdum purus, et dapibus mi arcu id libero. Suspendisse lorem orci, efficitur vitae euismod id, convallis id libero. Nullam dictum convallis velit non placerat. "
-        android:id="@+id/movie_overview"
-        style="@style/overview_style" />
+    android:layout_height="match_parent">
 
-</LinearLayout>
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context="mihailproductions.com.popularmovies.MovieActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/movie_poster"
+                style="@style/poster_style"
+                tools:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/movie_title"
+                style="@style/title_style"
+                tools:text="Title" />
+
+            <ImageView
+                android:id="@+id/favorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:layout_toEndOf="@id/movie_poster"
+                android:src="@drawable/ic_favorite" />
+
+            <TextView
+                android:id="@+id/movie_rating"
+                style="@style/rating_style"
+                tools:text="4" />
+
+            <TextView
+                android:id="@+id/movie_release"
+                style="@style/release_style"
+                tools:text="11-02-1996" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/movie_overview"
+            style="@style/overview_style"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis feugiat ipsum, in ultricies elit. Duis sodales mi mi, nec aliquet augue dictum ac. Morbi mauris purus, semper eget rutrum non, viverra sit amet elit. Quisque non sagittis arcu, ut dapibus nulla. Suspendisse vestibulum magna aliquam eros condimentum maximus. Sed congue, ex sed finibus accumsan, nunc justo interdum purus, et dapibus mi arcu id libero. Suspendisse lorem orci, efficitur vitae euismod id, convallis id libero. Nullam dictum convallis velit non placerat. " />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reviews_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/no_reviews"
+            android:id="@+id/no_reviews"
+            android:visibility="gone"
+            android:layout_margin="@dimen/margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 </ScrollView>

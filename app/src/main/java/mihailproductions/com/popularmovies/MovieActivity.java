@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mihailproductions.com.popularmovies.Adapter.ReviewListAdapter;
 import mihailproductions.com.popularmovies.Client.ApiInterface;
 import mihailproductions.com.popularmovies.Client.Client;
 import mihailproductions.com.popularmovies.Database.MovieDB;
@@ -41,6 +44,11 @@ public class MovieActivity extends AppCompatActivity {
     TextView mMovieOverview;
     @BindView(R.id.favorites)
     ImageView mFavorites;
+    @BindView(R.id.reviews_rv)
+    RecyclerView mReviewsRV;
+    @BindView(R.id.no_reviews)
+    TextView noReviews;
+    private ReviewListAdapter mAdapter;
     private ApiInterface mApi;
     private Movie movie;
     private int mCurrentMovieId;
@@ -107,7 +115,7 @@ public class MovieActivity extends AppCompatActivity {
                     }
                 });
                 trailerTV.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_play_circle, 0, 0, 0);
-                linearLayout.addView(trailerTV);
+                linearLayout.addView(trailerTV,2);
             }
         }
     }
@@ -147,6 +155,18 @@ public class MovieActivity extends AppCompatActivity {
         });
     }
 
+    private void initiateReviews(){
+        mReviewsRV.setLayoutManager(new LinearLayoutManager(this));
+        if(movie.getReviews().getResults().size()>0){
+            mAdapter = new ReviewListAdapter(this, movie.getReviews().getResults());
+            mReviewsRV.setAdapter(mAdapter);
+        }else{
+            mReviewsRV.setVisibility(View.GONE);
+            noReviews.setVisibility(View.VISIBLE);
+        }
+
+    }
+
     void populateMovieActivity() {
         final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185//";
         Picasso.with(this)
@@ -159,5 +179,6 @@ public class MovieActivity extends AppCompatActivity {
         mMovieRelease.setText(movie.getReleaseDate());
         mMovieOverview.setText(movie.getPlotSynopsis());
         initiateTrailers();
+        initiateReviews();
     }
 }
