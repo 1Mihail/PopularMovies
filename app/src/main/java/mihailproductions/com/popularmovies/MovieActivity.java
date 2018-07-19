@@ -1,11 +1,16 @@
 package mihailproductions.com.popularmovies;
 
 import android.arch.persistence.room.Room;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +23,7 @@ import mihailproductions.com.popularmovies.Client.Client;
 import mihailproductions.com.popularmovies.Database.MovieDB;
 import mihailproductions.com.popularmovies.Model.LocalDB.MovieEntity;
 import mihailproductions.com.popularmovies.Model.Movie;
+import mihailproductions.com.popularmovies.Model.Result;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,6 +85,44 @@ public class MovieActivity extends AppCompatActivity {
             }
         });
     }
+
+    void initiateTrailers(){
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_container);
+        final String youtube = "YouTube";
+        final float scale = getResources().getDisplayMetrics().density/2;
+        int marginDpAsPixels = (int) (getResources().getDimension(R.dimen.margin)*scale + 0.5f);
+        int margin2DpAsPixels = (int) (getResources().getDimension(R.dimen.margin2)*scale + 0.5f);
+        for(final Result result : movie.getVideos().getResults()){
+            if(result.getSite().equals(youtube))
+            {
+                TextView trailerTV = new TextView(this);
+                trailerTV.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                trailerTV.setText(result.getName());
+                trailerTV.setPadding(marginDpAsPixels, margin2DpAsPixels, marginDpAsPixels, margin2DpAsPixels);
+                trailerTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        watchYoutubeVideo(MovieActivity.this,result.getKey());
+                    }
+                });
+                trailerTV.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_play_circle, 0, 0, 0);
+                linearLayout.addView(trailerTV);
+            }
+        }
+    }
+
+    public static void watchYoutubeVideo(Context context, String id){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + id));
+        try {
+            context.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            context.startActivity(webIntent);
+        }
+    }
+
     void adjustFavoriteButtonColor(){
         MovieEntity favoriteMovie = movieDatabase.daoAccess().fetchOneMoviesbyMovieId(mCurrentMovieId);
         if(favoriteMovie!=null){
@@ -114,5 +158,6 @@ public class MovieActivity extends AppCompatActivity {
         mMovieRating.setText(String.valueOf(movie.getVoteAverage()));
         mMovieRelease.setText(movie.getReleaseDate());
         mMovieOverview.setText(movie.getPlotSynopsis());
+        initiateTrailers();
     }
 }

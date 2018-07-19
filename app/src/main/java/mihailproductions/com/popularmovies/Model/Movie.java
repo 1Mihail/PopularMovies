@@ -13,6 +13,10 @@ public class Movie {
     private double voteAverage;
     @SerializedName("overview")
     private String plotSynopsis;
+    @SerializedName("videos")
+    private Videos videos;
+    @SerializedName("reviews")
+    private Reviews reviews;
 
     public Movie(String title, String releaseDate, String posterPath, double voteAverage, String plotSynopsis) {
         this.title = title;
@@ -50,5 +54,13 @@ public class Movie {
 
     public String getPlotSynopsis() {
         return plotSynopsis;
+    }
+
+    public Videos getVideos() {
+        return videos;
+    }
+
+    public Reviews getReviews() {
+        return reviews;
     }
 }

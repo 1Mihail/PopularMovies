@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin">16dp</dimen>
+    <dimen name="margin2">8dp</dimen>
     <dimen name="title_size">24sp</dimen>
     <dimen name="padding">8dp</dimen>
     <dimen name="poster_width">100dp</dimen>

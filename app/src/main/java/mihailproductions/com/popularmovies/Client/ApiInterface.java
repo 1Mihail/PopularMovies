@@ -14,6 +14,7 @@ public interface ApiInterface {
     String TOP_RATED_REQUEST = "top_rated/";
     String API_KEY = "?api_key="+ BuildConfig.API_KEY;
     String ID_REQUEST = "{id}";
+    String APPEND_VIDEOS_REVIEWS = "&append_to_response=videos,reviews";
 
     @GET(POPULAR_REQUEST + API_KEY)
     Call<MovieResponse> getPopularMovies();
@@ -21,6 +22,6 @@ public interface ApiInterface {
     @GET(TOP_RATED_REQUEST + API_KEY)
     Call<MovieResponse> getTopRatedMovies();
 
-    @GET(ID_REQUEST + API_KEY)
+    @GET(ID_REQUEST + API_KEY + APPEND_VIDEOS_REVIEWS)
     Call<Movie> getMovieDetails(@Path("id") int id);
 }

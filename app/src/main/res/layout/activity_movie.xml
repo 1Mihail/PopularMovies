@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="mihailproductions.com.popularmovies.MovieActivity">
+    tools:context="mihailproductions.com.popularmovies.MovieActivity"
+    android:id="@+id/ll_container">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -39,5 +40,6 @@
         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis feugiat ipsum, in ultricies elit. Duis sodales mi mi, nec aliquet augue dictum ac. Morbi mauris purus, semper eget rutrum non, viverra sit amet elit. Quisque non sagittis arcu, ut dapibus nulla. Suspendisse vestibulum magna aliquam eros condimentum maximus. Sed congue, ex sed finibus accumsan, nunc justo interdum purus, et dapibus mi arcu id libero. Suspendisse lorem orci, efficitur vitae euismod id, convallis id libero. Nullam dictum convallis velit non placerat. "
         android:id="@+id/movie_overview"
         style="@style/overview_style" />
+
 </LinearLayout>
 </ScrollView>
