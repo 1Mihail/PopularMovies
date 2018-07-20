@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,17 +48,21 @@ public class MovieActivity extends AppCompatActivity {
     @BindView(R.id.reviews_rv)
     RecyclerView mReviewsRV;
     @BindView(R.id.no_reviews)
-    TextView noReviews;
-    @BindView(R.id.svContainer)
-    ScrollView mSvContainer;
+    TextView mNoReviews;
     private ReviewListAdapter mAdapter;
     private ApiInterface mApi;
-    private Movie movie;
+    private Movie mMovie;
     private int mCurrentMovieId;
 
     public static final String KEY_MOVIE_ID = "movieid";
-    private final String SCROLL_VIEW_POSITION = "scroll_view_position";
+    private final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185//";
     private MovieDB movieDatabase;
+
+    private final String KEY_MOVIE_POSTER = "movie_poster";
+    private final String KEY_MOVIE_TITLE = "movie_title";
+    private final String KEY_MOVIE_RATING = "movie_rating";
+    private final String KEY_MOVIE_RELEASE = "movie_release";
+    private final String KEY_MOVIE_OVERVIEW = "movie_overview";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +84,8 @@ public class MovieActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         MovieEntity favoriteMovie = movieDatabase.daoAccess().fetchMovieById(mCurrentMovieId);
-                        if(movie!=null && favoriteMovie==null){
-                            movieDatabase.daoAccess().insertOnlySingleMovie(new MovieEntity(movie.getId() ,movie.getTitle(),movie.getPosterPath()));
+                        if(mMovie !=null && favoriteMovie==null){
+                            movieDatabase.daoAccess().insertOnlySingleMovie(new MovieEntity(mMovie.getId() , mMovie.getTitle(), mMovie.getPosterPath()));
                         }else if(favoriteMovie != null){
                                 movieDatabase.daoAccess().deleteMovie(favoriteMovie);
                             }
@@ -113,7 +116,7 @@ public class MovieActivity extends AppCompatActivity {
         final float scale = getResources().getDisplayMetrics().density/2;
         int marginDpAsPixels = (int) (getResources().getDimension(R.dimen.margin)*scale + 0.5f);
         int margin2DpAsPixels = (int) (getResources().getDimension(R.dimen.margin2)*scale + 0.5f);
-        for(final Result result : movie.getVideos().getResults()){
+        for(final Result result : mMovie.getVideos().getResults()){
             if(result.getSite().equals(youtube))
             {
                 TextView trailerTV = new TextView(this);
@@ -148,7 +151,7 @@ public class MovieActivity extends AppCompatActivity {
         call.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                movie = response.body();
+                mMovie = response.body();
                 populateMovieActivity();
             }
 
@@ -161,27 +164,26 @@ public class MovieActivity extends AppCompatActivity {
 
     private void initiateReviews(){
         mReviewsRV.setLayoutManager(new LinearLayoutManager(this));
-        if(movie.getReviews().getResults().size()>0){
-            mAdapter = new ReviewListAdapter(this, movie.getReviews().getResults());
+        if(mMovie.getReviews().getResults().size()>0){
+            mAdapter = new ReviewListAdapter(this, mMovie.getReviews().getResults());
             mReviewsRV.setAdapter(mAdapter);
         }else{
             mReviewsRV.setVisibility(View.GONE);
-            noReviews.setVisibility(View.VISIBLE);
+            mNoReviews.setVisibility(View.VISIBLE);
         }
 
     }
 
     void populateMovieActivity() {
-        final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185//";
         Picasso.with(this)
-                .load(POSTER_BASE_URL + movie.getPosterPath())
+                .load(POSTER_BASE_URL + mMovie.getPosterPath())
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .error(android.R.drawable.ic_delete)
                 .into(mMoviePoster);
-        mMovieTitle.setText(movie.getTitle());
-        mMovieRating.setText(String.valueOf(movie.getVoteAverage()));
-        mMovieRelease.setText(movie.getReleaseDate());
-        mMovieOverview.setText(movie.getPlotSynopsis());
+        mMovieTitle.setText(mMovie.getTitle());
+        mMovieRating.setText(String.valueOf(mMovie.getVoteAverage()));
+        mMovieRelease.setText(mMovie.getReleaseDate());
+        mMovieOverview.setText(mMovie.getPlotSynopsis());
         initiateTrailers();
         initiateReviews();
     }
@@ -189,13 +191,27 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        //TODO: Finish
+        savedInstanceState.putString(KEY_MOVIE_POSTER, POSTER_BASE_URL + mMovie.getPosterPath());
+        savedInstanceState.putString(KEY_MOVIE_TITLE, mMovie.getTitle());
+        savedInstanceState.putString(KEY_MOVIE_RATING, String.valueOf(mMovie.getVoteAverage()));
+        savedInstanceState.putString(KEY_MOVIE_RELEASE, mMovie.getReleaseDate());
+        savedInstanceState.putString(KEY_MOVIE_OVERVIEW, mMovie.getPlotSynopsis());
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        //TODO: Finish
+        Picasso.with(this)
+                .load(savedInstanceState.getString(KEY_MOVIE_POSTER))
+                .placeholder(android.R.drawable.ic_menu_gallery)
+                .error(android.R.drawable.ic_delete)
+                .into(mMoviePoster);
+        mMovieTitle.setText(savedInstanceState.getString(KEY_MOVIE_TITLE));
+        mMovieRating.setText(savedInstanceState.getString(KEY_MOVIE_RATING));
+        mMovieRelease.setText(savedInstanceState.getString(KEY_MOVIE_RELEASE));
+        mMovieOverview.setText(savedInstanceState.getString(KEY_MOVIE_OVERVIEW));
+
+
     }
 }
